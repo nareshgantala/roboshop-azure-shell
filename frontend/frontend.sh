@@ -59,7 +59,7 @@ step_status "download front end source code"
 print_comment $YELLOW "copy nginx conf"
 if [ -f nginx.conf ]
 then 
-    cp /root/roboshop-azure-shell/frontend
+    cp /root/roboshop-azure-shell/frontend/nginx.conf
  /etc/nginx/nginx.conf &> /dev/null
 else
     print_comment $RED "nginx.conf is not found"
