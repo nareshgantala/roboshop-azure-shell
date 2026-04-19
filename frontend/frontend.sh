@@ -1,10 +1,12 @@
 #!/bin/bash
 set -uo pipefail
+RED="\e[0;31m"
+NC="\e[0m"
+GREEN="\e[0;32m"
+YELLOW="\e[0;33m"
+
 function print_comment(){
-    RED="\e[0;31m"
-    NC="\e[0m"
-    GREEN="\e[0;32m"
-    YELLOW="\e[0;33m"
+
     echo -e $1##########$2###########$NC
 }
 
