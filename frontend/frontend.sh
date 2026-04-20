@@ -33,6 +33,15 @@ else
     exit 1
 fi
 
+print_comment $YELLOW "copy nginx conf"
+if [ -f nginx.conf ]
+then 
+    cp /root/roboshop-azure-shell/frontend/nginx.conf
+ /etc/nginx/nginx.conf &> /dev/null
+else
+    print_comment $RED "nginx.conf is not found"
+    exit 1
+fi
 
 print_comment $YELLOW "Install nodejs"
 curl -fsSL https://rpm.nodesource.com/setup_20.x | bash - &> /dev/null
@@ -57,15 +66,7 @@ step_status "remove default code"
 cp -r out/* /usr/share/nginx/html/ &> /dev/null
 step_status "download front end source code"
 
-print_comment $YELLOW "copy nginx conf"
-if [ -f nginx.conf ]
-then 
-    cp /root/roboshop-azure-shell/frontend/nginx.conf
- /etc/nginx/nginx.conf &> /dev/null
-else
-    print_comment $RED "nginx.conf is not found"
-    exit 1
-fi
+
     
 step_status "copy nginx file"
 
