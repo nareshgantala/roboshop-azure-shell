@@ -45,6 +45,7 @@ curl -L -o /tmp/frontend.zip https://raw.githubusercontent.com/raghudevopsb89/ro
 step_status "Download front end code from remote repo" 
 mkdir -p /tmp/frontend &> /dev/null
 cd /tmp/frontend
+rm -rf /tmp/frontend &> /dev/null
 unzip /tmp/frontend.zip &> /dev/null
 step_status "unzipping front end code in /tmp" 
 npm install &> /dev/null
