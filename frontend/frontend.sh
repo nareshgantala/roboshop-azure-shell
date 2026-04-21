@@ -6,17 +6,17 @@ GREEN="\e[0;32m"
 YELLOW="\e[0;33m"
 
 function print_comment(){
-
-    echo -e $1##########$2###########$NC
+    echo -e "$1##########$2###########$NC"
 }
 
 function step_status(){
-    if [ $? -eq 0 ]
+    local rc=$?
+    if [ $rc -eq 0 ]
     then
         print_comment $GREEN "$1 step completed successfully"
     else
         print_comment $RED "$1 step is failed"
-        exit 1
+        exit $rc
     fi
 }
 
@@ -65,10 +65,6 @@ rm -rf /usr/share/nginx/html/* &> /dev/null
 step_status "remove default code" 
 cp -r out/* /usr/share/nginx/html/ &> /dev/null
 step_status "download front end source code"
-
-
-    
-step_status "copy nginx file"
-
+ 
 systemctl restart nginx 
 step_status "nginx restart"
