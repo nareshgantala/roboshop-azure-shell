@@ -26,7 +26,3 @@ then
   step_status  "password creation"
 else
    print_comment $YELLOW "Password is alredy created"
-   
-step_status "Password creation for user"
-
-
