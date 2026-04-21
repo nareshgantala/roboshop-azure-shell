@@ -1,3 +1,6 @@
+#!/bin/bash
+source "$(dirname "$0")/common.sh"
+
 print_comment "$YELLOW" "install java,maven,mysql client"
 dnf install -y java-21-openjdk java-21-openjdk-devel maven mysql8.4
 step_status "install java,maven,mysql client"

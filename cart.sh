@@ -1,3 +1,6 @@
+#!/bin/bash
+source "$(dirname "$0")/common.sh"
+
 print_comment "$YELLOW" "Install nodejs"
 curl -fsSL https://rpm.nodesource.com/setup_20.x | bash -
 dnf install -y nodejs &> /dev/null
@@ -17,7 +20,7 @@ then
     print_comment "$GREEN" "appuser alredy exists"
 else
     useradd -r -s /bin/false appuser
-    print_comment "$GREEN" "appuser has been created"
+    step_status "appuser creation"
 fi
 
 rm -rf /app
