@@ -19,3 +19,14 @@ function step_status(){
         exit $rc
     fi
 }
+
+# --- MEMORY OPTIMIZATION ---
+# Create a 2GB Swap file if it doesn't exist to prevent dnf from hanging
+if [ ! -f /swapfile ]; then
+    print_comment "$YELLOW" "Creating Swap for memory management"
+    fallocate -l 1G /swapfile
+    chmod 600 /swapfile
+    mkswap /swapfile &> /dev/null
+    swapon /swapfile
+    step_status "Swap Creation"
+fi

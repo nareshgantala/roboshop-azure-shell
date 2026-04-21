@@ -14,12 +14,19 @@ step_status "restart mysqld"
 
 
 print_comment $YELLOW "Create Password for user"
-mysql -u root -e "
-  CREATE USER 'root'@'%' IDENTIFIED BY 'RoboShop@1';
-  GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
-  ALTER USER 'root'@'localhost' IDENTIFIED BY 'RoboShop@1';
-  FLUSH PRIVILEGES;
-"
+mysql -u root -pRoboShop@1 -e "SHOW DATABASES;"
+if [ $? -ne 0 ]
+then
+  mysql -u root -e "
+    CREATE USER 'root'@'%' IDENTIFIED BY 'RoboShop@1';
+    GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
+    ALTER USER 'root'@'localhost' IDENTIFIED BY 'RoboShop@1';
+    FLUSH PRIVILEGES;
+  "
+  step_status  "password creation"
+else
+   print_comment $YELLOW "Password is alredy created"
+   
 step_status "Password creation for user"
 
 
