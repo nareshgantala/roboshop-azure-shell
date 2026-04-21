@@ -56,6 +56,7 @@ mkdir -p /tmp/frontend &> /dev/null
 cd /tmp/frontend
 unzip /tmp/frontend.zip &> /dev/null
 step_status "unzipping front end code in /tmp" 
+npm cache clean --force
 npm install &> /dev/null
 step_status "Installing dependencies and libraries"
 npm run build &> /dev/null
