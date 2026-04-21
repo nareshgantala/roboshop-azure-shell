@@ -26,3 +26,4 @@ then
   step_status  "password creation"
 else
    print_comment $YELLOW "Password is alredy created"
+fi
