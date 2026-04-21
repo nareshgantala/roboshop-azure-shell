@@ -1,23 +1,6 @@
-#!/bin/bash
-set -uo pipefail
-RED="\e[0;31m"
-GREEN="\e[0;32m"
-YELLOW="\e[0;33m"
-NC="\e[0m"
-function print_comment(){
-  echo -e "$1##########$2###########$NC"
-}
-
-function step_status(){
-  local rc=$?
-  if [ $rc -eq 0 ]
-  then
-    print_comment $GREEN "$1 step completed successfully"
-  else
-    print_comment $RED "$1 step is failed"
-    exit $rc
-  fi
-}
+# Source the common functions and variables
+# This looks for common.sh in the same directory as this script
+source "$(dirname "$0")/common.sh"
 
 print_comment $YELLOW "Install MYSQL Server"
 dnf install -y mysql8.4-server
