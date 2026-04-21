@@ -3,13 +3,13 @@
 source "$(dirname "$0")/common.sh"
 
 print_comment $YELLOW "Install MYSQL Server"
-dnf install -y mysql8.4-server
+dnf install -y mysql8.4-server &> /dev/null
 step_status "MYSQL Server installation"
 
 
 print_comment $YELLOW "restart mysqld"
-systemctl enable mysqld
-systemctl restart mysqld
+systemctl enable mysqld &> /dev/null
+systemctl restart mysqld &> /dev/null
 step_status "restart mysqld"
 
 
