@@ -16,6 +16,7 @@ function step_status(){
   else
     print_comment $RED "$1 step is failed"
     exit $rc
+  fi
 }
 
 print_comment $YELLOW "Install MYSQL Server"
