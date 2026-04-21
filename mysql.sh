@@ -5,7 +5,7 @@ GREEN="\e[0;32m"
 YELLOW="\e[0;33m"
 NC="\e[0m"
 function print_comment(){
-  echo "$1##########$2###########$NC"
+  echo -e "$1##########$2###########$NC"
 }
 
 function step_status(){
