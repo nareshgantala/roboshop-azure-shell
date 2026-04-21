@@ -30,3 +30,4 @@ if [ ! -f /swapfile ]; then
     swapon /swapfile
     step_status "Swap Creation"
 fi
+
