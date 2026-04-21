@@ -1,7 +1,7 @@
 #!/bin/bash
 set -uo pipefail
 RED="\e[0;31m"
-GREEN="\e[0:32m"
+GREEN="\e[0;32m"
 YELLOW="\e[0;33m"
 NC="\e[0m"
 function print_comment(){
@@ -24,6 +24,12 @@ dnf install -y mysql8.4-server
 step_status "MYSQL Server installation"
 
 
+print_comment $YELLOW "restart mysqld"
+systemctl enable mysqld
+systemctl restart mysqld
+step_status "restart mysqld"
+
+
 print_comment $YELLOW "Create Password for user"
 mysql -u root -e "
   CREATE USER 'root'@'%' IDENTIFIED BY 'RoboShop@1';
@@ -33,7 +39,4 @@ mysql -u root -e "
 "
 step_status "Password creation for user"
 
-print_comment $YELLOW "restart mysqld"
-systemctl enable mysqld
-systemctl restart mysqld
-step_status "restart mysqld"
+
