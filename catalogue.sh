@@ -7,8 +7,6 @@ print_comment $YELLOW "copy catalogue service file"
 if [ -f catalougue.service ]
 then
     cp catalogue.service /etc/systemd/system/catalogue.service
-    # Update the IP in the service file automatically
-    sed -i "s/localhost/${MYSQL_IP}/" /etc/systemd/system/catalogue.service
 else
     print_comment "catalogue service file not found"
     exit 1
