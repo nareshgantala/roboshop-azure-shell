@@ -1,41 +1,10 @@
 #!/bin/bash
 source "$(dirname "$0")/common.sh"
 component_name=shipping
-
-print_comment "$YELLOW" "install java,maven,mysql client"
-dnf install -y java-21-openjdk java-21-openjdk-devel maven mysql8.4
-step_status "install java,maven,mysql client"
-
 copy_service_file payment
-
-print_comment "$YELLOW" "download $component_name code"
-rm -rf /tmp/$component_name.zip
-curl -L -o /tmp/$component_name.zip https://raw.githubusercontent.com/raghudevopsb89/roboshop-microservices/main/artifacts/$component_name.zip
-step_status "download $component_name code"
-
-rm -rf /app
-mkdir -p /app
-cd /app
-
-print_comment "$YELLOW" "unzip code"
-unzip /tmp/$component_name.zip
-step_status "unzip code"
-
+shipping_build
 print_comment "$YELLOW" "database configuration"
-mysql -h <MYSQL-SERVER-IP> -u root -pRoboShop@1 < db/schema.sql
-mysql -h <MYSQL-SERVER-IP> -u root -pRoboShop@1 < db/app-user.sql
+mysql -h mysql.naresh-training.online -u root -pRoboShop@1 < db/schema.sql
+mysql -h mysql.naresh-training.online -u root -pRoboShop@1 < db/app-user.sql
 step_status "database configuration"
-
-
-add_appuser
-
-cd /app
-
-print_comment "$YELLOW" "building with maven"
-mvn clean package -DskipTests
-step_status "building with maven"
-
-
-cp target/$component_name.jar /app/$component_name.jar
-step_status "copy jar in /app"
 system_restart

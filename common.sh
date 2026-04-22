@@ -160,3 +160,26 @@ function frontend_build(){
     systemctl restart nginx 
     step_status "nginx restart"
 }
+
+function shipping_build(){
+    print_comment "$YELLOW" "install java,maven,mysql client"
+    dnf install -y java-21-openjdk java-21-openjdk-devel maven mysql8.4
+    step_status "install java,maven,mysql client"
+    print_comment "$YELLOW" "download $component_name code"
+    rm -rf /tmp/$component_name.zip
+    curl -L -o /tmp/$component_name.zip https://raw.githubusercontent.com/raghudevopsb89/roboshop-microservices/main/artifacts/$component_name.zip
+    step_status "download $component_name code"
+    rm -rf /app
+    mkdir -p /app
+    cd /app
+    print_comment "$YELLOW" "unzip code"
+    unzip /tmp/$component_name.zip
+    step_status "unzip code"
+    add_appuser
+    cd /app
+    print_comment "$YELLOW" "building with maven"
+    mvn clean package -DskipTests
+    step_status "building with maven"
+    cp target/$component_name.jar /app/$component_name.jar
+    step_status "copy jar in /app"
+}
