@@ -61,7 +61,7 @@ function add_appuser(){
 function system_restart(){
     print_comment "$YELLOW" "restart $component_name service"
     systemctl daemon-reload
-    systemctl enable $component_name
+    systemctl enable $component_name &> /dev/null
     systemctl restart $component_name
     step_status "restart $component_name service"
 }
