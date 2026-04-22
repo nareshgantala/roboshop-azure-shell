@@ -6,15 +6,9 @@ curl -fsSL https://rpm.nodesource.com/setup_20.x | bash -
 dnf install -y nodejs
 step_status "install nodejs"
 
-if [ -f user.service ]
-then
-    print_comment "copying user service file"
-    cp user.service /etc/systemd/system/user.service
-    step_status "copy user service file"
-else
-    print_comment "$RED" "user service file doesnot exist"
-    exit 1
-fi
+copy_service_file user
+add_appuser
+
 rm -rf /app
 mkdir -p /app
 print_comment "$YELLOW" "download user code"

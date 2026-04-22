@@ -5,15 +5,7 @@ print_comment "$YELLOW" "install java,maven,mysql client"
 dnf install -y java-21-openjdk java-21-openjdk-devel maven mysql8.4
 step_status "install java,maven,mysql client"
 
-if [ -f shipping.service ]
-then
-    print_comment "copying shipping service file"
-    cp shipping.service /etc/systemd/system/shipping.service
-    step_status "copy shipping service file"
-else
-    print_comment "$RED" "shipping service file doesnot exist"
-    exit 1
-fi
+copy_service_file payment
 
 print_comment "$YELLOW" "download shipping code"
 rm -rf /tmp/shipping.zip
@@ -34,14 +26,7 @@ mysql -h <MYSQL-SERVER-IP> -u root -pRoboShop@1 < db/app-user.sql
 step_status "database configuration"
 
 
-id appuser &> /dev/null
-if [ $? -eq 0 ]
-then
-    print_comment "$GREEN" "appuser alredy exists"
-else
-    useradd -r -s /bin/false appuser
-    step_status  "appuser creation"
-fi
+add_appuser
 
 cd /app
 

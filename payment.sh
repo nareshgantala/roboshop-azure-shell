@@ -6,23 +6,9 @@ print_comment "$YELLOW" "install python"
 dnf install -y python3 python3-pip &> /dev/null
 step_status "python installation"
 
-if [ -f payment.service ]
-then
-    cp payment.service /etc/systemd/system/payment.service 
-    step_status "payment service file copy"
-else
-    print_comment "$RED" "payment service file doesnot exist"
-    exit 1
-fi
+copy_service_file payment
 
-id appuser &> /dev/null
-if [ $? -eq 0 ]
-then
-    print_comment "$GREEN" "appuser alredy exists"
-else
-    useradd -r -s /bin/false appuser
-    step_status "appuser creation"
-fi
+add_appuser
 
 rm -rf /app
 mkdir -p /app

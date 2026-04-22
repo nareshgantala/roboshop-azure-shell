@@ -3,13 +3,7 @@ source "$(dirname "$0")/common.sh"
 
 print_comment $YELLOW "copy catalogue service file"
 
-if [ -f catalougue.service ]
-then
-    cp catalogue.service /etc/systemd/system/catalogue.service
-else
-    print_comment "catalogue service file not found"
-    exit 1
-fi
+copy_service_file catalogue
 
 step_status "copy catalogue service file"
 
@@ -38,13 +32,7 @@ step_status "copy database schema to mysql server"
 
 print_comment "create appuser"
 
-id appuser &> /dev/null
-if [ $? -ne 0 ]; then
-    useradd -r -s /bin/false appuser
-    step_status "Appuser creation"
-else
-    print_comment "$GREEN" "User appuser already exists"
-fi
+add_appuser
 
 cd /app
 

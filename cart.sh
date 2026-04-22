@@ -6,22 +6,9 @@ curl -fsSL https://rpm.nodesource.com/setup_20.x | bash -
 dnf install -y nodejs &> /dev/null
 step_status "nodejs installation"
 
-if [ -f cart.service ]
-then
-    cp cart.service /etc/systemd/system/cart.service
-    step_status "cart service file copy"
-else
-    print_comment "$RED" "cart service file doesnot exist"
-fi
+copy_service_file cart
 
-id appuser &> /dev/null
-if [ $? -eq 0 ]
-then
-    print_comment "$GREEN" "appuser alredy exists"
-else
-    useradd -r -s /bin/false appuser
-    step_status "appuser creation"
-fi
+add_appuser
 
 rm -rf /app
 mkdir -p /app

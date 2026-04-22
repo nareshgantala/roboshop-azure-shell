@@ -31,3 +31,25 @@ if [ ! -f /swapfile ]; then
     step_status "Swap Creation"
 fi
 
+function copy_service_file(){
+    if [ -f $1.service ]
+    then
+        cp $1.service /etc/systemd/system/$1.service
+        step_status "copy $1 service file"
+        
+    else
+        print_comment "$1 service file not found"
+        exit 1
+    fi
+}
+
+function add_appuser(){
+    id appuser &> /dev/null
+    if [ $? -eq 0 ]
+    then
+        print_comment "$GREEN" "appuser alredy exists"
+    else
+        useradd -r -s /bin/false appuser
+        step_status "appuser creation"
+    fi
+}

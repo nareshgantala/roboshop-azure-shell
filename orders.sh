@@ -5,24 +5,9 @@ print_comment "$YELLOW" "java, maven installation"
 dnf install -y java-21-openjdk java-21-openjdk-devel maven
 step_status "java, maven installation"
 
-if [ -f orders.service ]
-then
-    print_comment "$YELLOW" "orders service file copy"
-    cp orders.service /etc/systemd/system/orders.service 
-    step_status "orders service file copy"
-else
-    print_comment "$RED" "orders service file doesnot exist"
-    exit 1
-fi
+copy_service_file orders
 
-id appuser &> /dev/null
-if [ $? -eq 0 ]
-then
-    print_comment "$GREEN" "appuser alredy exists"
-else
-    useradd -r -s /bin/false appuser
-    step_status "appuser creation"
-fi
+add_appuser
 
 rm -rf /app
 
