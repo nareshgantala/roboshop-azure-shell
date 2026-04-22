@@ -1,21 +1,21 @@
 #!/bin/bash
 source "$(dirname "$0")/common.sh"
-
+component_name=ratings
 print_comment "$YELLOW" "install python,mysql client"
 dnf install -y python3 python3-pip mysql8.4
 step_status "install python,mysql client"
 
-copy_service_file ratings
+copy_service_file $component_name
 
-print_comment "$YELLOW" "download ratings code"
-rm -rf /tmp/ratings.zip
-curl -L -o /tmp/ratings.zip https://raw.githubusercontent.com/raghudevopsb89/roboshop-microservices/main/artifacts/ratings.zip
-step_status "download ratings code"
+print_comment "$YELLOW" "download $component_name code"
+rm -rf /tmp/$component_name.zip
+curl -L -o /tmp/$component_name.zip https://raw.githubusercontent.com/raghudevopsb89/roboshop-microservices/main/artifacts/$component_name.zip
+step_status "download $component_name code"
 rm -rf /app
 mkdir -p /app && cd /app
 
 print_comment "$YELLOW" "unzip code"
-unzip /tmp/ratings.zip
+unzip /tmp/$component_name.zip
 step_status "unzip code"
 
 print_comment "$YELLOW" "database config"
@@ -34,8 +34,4 @@ chown -R appuser:appuser /app
 chmod o-rwx /app -R
 step_status "configure permissions"
 
-print_comment "$YELLOW" "restart ratings service"
-systemctl daemon-reload
-systemctl enable ratings
-systemctl start ratings
-step_status "restart ratings service"
+system_restart

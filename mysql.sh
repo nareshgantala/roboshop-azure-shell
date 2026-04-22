@@ -1,16 +1,17 @@
 # Source the common functions and variables
 # This looks for common.sh in the same directory as this script
 source "$(dirname "$0")/common.sh"
+component_name=mysqld
 
 print_comment $YELLOW "Install MYSQL Server"
 dnf install -y mysql8.4-server &> /dev/null
 step_status "MYSQL Server installation"
 
 
-print_comment $YELLOW "restart mysqld"
-systemctl enable mysqld &> /dev/null
-systemctl restart mysqld &> /dev/null
-step_status "restart mysqld"
+print_comment $YELLOW "restart $component_name"
+systemctl enable $component_name &> /dev/null
+systemctl restart $component_name &> /dev/null
+step_status "restart $component_name"
 
 
 print_comment $YELLOW "Create Password for user"

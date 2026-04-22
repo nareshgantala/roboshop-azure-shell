@@ -1,5 +1,6 @@
 #!/bin/bash
 source "$(dirname "$0")/common.sh"
+component_name=mongod
 
 if [ -f mongo.repo ]
 then
@@ -15,7 +16,4 @@ dnf install -y mongodb-org &> /dev/null
 sed -i 's/bindIp: 127.0.0.1/bindIp: 0.0.0.0/' /etc/mongod.conf
 step_status "mongodb installation"
 
-print_comment $YELLOW "restart mongodb"
-systemctl enable mongod
-systemctl restart mongod
-step_status "mongodb restart"
+system_restart

@@ -11,7 +11,7 @@ Restart=on-failure
 RestartSec=10
 SyslogIdentifier=catalogue
 
-Environment=MYSQL_HOST=localhost
+Environment=MYSQL_HOST=mysql.naresh-training.online
 Environment=MYSQL_USER=catalogue
 Environment=MYSQL_PASSWORD=RoboShop@1
 Environment=MYSQL_DATABASE=catalogue

@@ -1,5 +1,6 @@
 #!/bin/bash
 source "$(dirname "$0")/common.sh"
+component_name=shipping
 
 print_comment "$YELLOW" "install java,maven,mysql client"
 dnf install -y java-21-openjdk java-21-openjdk-devel maven mysql8.4
@@ -7,17 +8,17 @@ step_status "install java,maven,mysql client"
 
 copy_service_file payment
 
-print_comment "$YELLOW" "download shipping code"
-rm -rf /tmp/shipping.zip
-curl -L -o /tmp/shipping.zip https://raw.githubusercontent.com/raghudevopsb89/roboshop-microservices/main/artifacts/shipping.zip
-step_status "download shipping code"
+print_comment "$YELLOW" "download $component_name code"
+rm -rf /tmp/$component_name.zip
+curl -L -o /tmp/$component_name.zip https://raw.githubusercontent.com/raghudevopsb89/roboshop-microservices/main/artifacts/$component_name.zip
+step_status "download $component_name code"
 
 rm -rf /app
 mkdir -p /app
 cd /app
 
 print_comment "$YELLOW" "unzip code"
-unzip /tmp/shipping.zip
+unzip /tmp/$component_name.zip
 step_status "unzip code"
 
 print_comment "$YELLOW" "database configuration"
@@ -35,16 +36,6 @@ mvn clean package -DskipTests
 step_status "building with maven"
 
 
-cp target/shipping.jar /app/shipping.jar
+cp target/$component_name.jar /app/$component_name.jar
 step_status "copy jar in /app"
-
-print_comment "$YELLOW" "permissions config for appuser"
-chown -R appuser:appuser /app
-chmod o-rwx /app -R
-step_status "permissions config for appuser"
-
-print_comment "$YELLOW" "restart shipping service"
-systemctl daemon-reload
-systemctl enable shipping
-systemctl restart shipping
-step_status "restart shipping service"
+system_restart

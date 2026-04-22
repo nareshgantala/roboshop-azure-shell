@@ -11,7 +11,7 @@ Restart=on-failure
 RestartSec=10
 SyslogIdentifier=payment
 
-Environment=AMQP_HOST=localhost
+Environment=AMQP_HOST=rabbitmq.naresh-training.online
 Environment=AMQP_USER=roboshop
 Environment=AMQP_PASS=RoboShop@1
 Environment=CART_URL=http://localhost:8003

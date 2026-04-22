@@ -52,4 +52,117 @@ function add_appuser(){
         useradd -r -s /bin/false appuser
         step_status "appuser creation"
     fi
+    print_comment "$YELLOW" "configure permisison"
+    chown -R appuser:appuser /app
+    chmod o-rwx /app -R
+    step_status "configure permisison"
+}
+
+function system_restart(){
+    print_comment "$YELLOW" "restart $component_name service"
+    systemctl daemon-reload
+    systemctl enable $component_name
+    systemctl restart $component_name
+    step_status "restart $component_name service"
+}
+
+function nodejs(){
+    print_comment "$YELLOW" "Install nodejs"
+    curl -fsSL https://rpm.nodesource.com/setup_20.x | bash -
+    dnf install -y nodejs &> /dev/null
+    step_status "nodejs installation"
+    add_appuser
+    rm -rf /app
+    mkdir -p /app
+    print_comment "$YELLOW" "download $component_name code"
+    rm -rf /tmp/$component_name.zip
+    curl -L -o /tmp/$component_name.zip https://raw.githubusercontent.com/raghudevopsb89/roboshop-microservices/main/artifacts/$component_name.zip
+    step_status "download $component_name code"
+    cd /app
+    print_comment "$YELLOW" "unzip code"
+    unzip /tmp/$component_name.zip
+    step_status "unzip code"
+    print_comment "$YELLOW" "install node dependencies"
+    npm install --production
+    step_status "install node dependencies"
+}
+
+function go(){
+    print_comment $YELLOW "install golang & msql client"
+    dnf install -y golang git mysql8.4 &> /dev/null
+    step_status "golang & msql client installation"
+    print_comment $YELLOW "download $component_name code"
+    rm -rf /tmp/$component_name.zip
+    curl -L -o /tmp/$component_name.zip https://raw.githubusercontent.com/raghudevopsb89/roboshop-microservices/main/artifacts/$component_name.zip
+    step_status "download $component_name code"
+    print_comment $YELLOW "unzip code"
+    rm -rf /app
+    mkdir -p /app
+    cd /app
+    unzip /tmp/$component_name.zip
+    step_status "unzip code"
+    print_comment "create appuser"
+    add_appuser
+    cd /app
+    print_comment $YELLOW "Build go app"
+    go mod tidy
+    CGO_ENABLED=0 go build -o /app/$component_name .
+    step_status "Build Go app"
+
+}
+
+function nginx(){
+    print_comment $YELLOW "Install nginx webserver"
+    dnf install -y nginx &> /dev/null
+    systemctl enable nginx &> /dev/null
+    systemctl start nginx &> /dev/null
+    is_nginx_active=$(systemctl is-active nginx)
+    if [ "$is_nginx_active" = active ]
+    then
+        print_comment $GREEN "nginx installed successfully"
+    else
+        print_comment $RED "nginx installation is failed"
+        exit 1
+    fi
+
+    print_comment $YELLOW "copy nginx conf"
+    if [ -f nginx.conf ]
+    then 
+        cp nginx.conf /etc/nginx/nginx.conf &> /dev/null
+    else
+        print_comment $RED "nginx.conf is not found"
+        exit 1
+    fi
+}
+
+function npm(){
+    print_comment $YELLOW "Install nodejs"
+    curl -fsSL https://rpm.nodesource.com/setup_20.x | bash - &> /dev/null
+    dnf install -y nodejs &> /dev/null
+    step_status "node installation"
+
+
+    print_comment $YELLOW "Download $component_name source code"
+    curl -L -o /tmp/$component_name.zip https://raw.githubusercontent.com/raghudevopsb89/roboshop-microservices/main/artifacts/$component_name.zip &> /dev/null
+    step_status "Download front end code from remote repo" 
+    rm -rf /tmp/$component_name &> /dev/null
+    mkdir -p /tmp/$component_name &> /dev/null
+    cd /tmp/$component_name
+    unzip /tmp/$component_name.zip &> /dev/null
+
+
+
+    step_status "unzipping front end code in /tmp" 
+    npm cache clean --force
+    npm install &> /dev/null
+    step_status "Installing dependencies and libraries"
+    npm run build &> /dev/null
+    step_status "Building code"
+    rm -rf /usr/share/nginx/html/* &> /dev/null
+    step_status "remove default code" 
+    cp -r out/* /usr/share/nginx/html/ &> /dev/null
+    step_status "download front end source code"
+    
+    systemctl restart nginx 
+    step_status "nginx restart"
 }

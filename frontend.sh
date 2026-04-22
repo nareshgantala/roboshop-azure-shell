@@ -1,52 +1,6 @@
 # Source the common functions and variables
 # This looks for common.sh in the same directory as this script
 source "$(dirname "$0")/common.sh"
-
-print_comment $YELLOW "Install nginx webserver"
-dnf install -y nginx &> /dev/null
-systemctl enable nginx &> /dev/null
-systemctl start nginx &> /dev/null
-is_nginx_active=$(systemctl is-active nginx)
-if [ "$is_nginx_active" = active ]
-then
-    print_comment $GREEN "nginx installed successfully"
-else
-    print_comment $RED "nginx installation is failed"
-    exit 1
-fi
-
-print_comment $YELLOW "copy nginx conf"
-if [ -f nginx.conf ]
-then 
-    cp nginx.conf /etc/nginx/nginx.conf &> /dev/null
-else
-    print_comment $RED "nginx.conf is not found"
-    exit 1
-fi
-
-print_comment $YELLOW "Install nodejs"
-curl -fsSL https://rpm.nodesource.com/setup_20.x | bash - &> /dev/null
-dnf install -y nodejs &> /dev/null
-step_status "node installation"
-
-
-print_comment $YELLOW "Download frontend source code"
-curl -L -o /tmp/frontend.zip https://raw.githubusercontent.com/raghudevopsb89/roboshop-microservices/main/artifacts/frontend.zip &> /dev/null
-step_status "Download front end code from remote repo" 
-rm -rf /tmp/frontend &> /dev/null
-mkdir -p /tmp/frontend &> /dev/null
-cd /tmp/frontend
-unzip /tmp/frontend.zip &> /dev/null
-step_status "unzipping front end code in /tmp" 
-npm cache clean --force
-npm install &> /dev/null
-step_status "Installing dependencies and libraries"
-npm run build &> /dev/null
-step_status "Building code"
-rm -rf /usr/share/nginx/html/* &> /dev/null
-step_status "remove default code" 
-cp -r out/* /usr/share/nginx/html/ &> /dev/null
-step_status "download front end source code"
- 
-systemctl restart nginx 
-step_status "nginx restart"
+component_name=frontend
+nginx
+npm

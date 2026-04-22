@@ -11,7 +11,7 @@ Restart=on-failure
 RestartSec=10
 SyslogIdentifier=shipping
 
-Environment=DB_HOST=localhost
+Environment=DB_HOST=mysql.naresh-training.online
 Environment=DB_USER=shipping
 Environment=DB_PASS=RoboShop@1
 Environment=PORT=8004
