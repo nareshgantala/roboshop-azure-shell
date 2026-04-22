@@ -101,7 +101,7 @@ function go(){
     cd /app
     unzip /tmp/$component_name.zip
     step_status "unzip code"
-    print_comment "create appuser"
+    print_comment $YELLOW "create appuser"
     add_appuser
     cd /app
     print_comment $YELLOW "Build go app"
