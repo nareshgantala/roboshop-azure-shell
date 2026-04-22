@@ -215,14 +215,14 @@ function orders_build(){
     step_status "$component_name code download"
     mkdir -p /app && cd /app
     add_appuser
-    print_comment "$component_name code download"
+    print_comment "$YELLOW" "$component_name code download"
     unzip /tmp/$component_name.zip &> /dev/null
     step_status "unzip $component_name code"
-    print_comment "build with maven"
+    print_comment "$YELLOW" "build with maven"
     mvn clean package -DskipTests &> /dev/null
     step_status "build with maven"
 
-    print_comment "copy jar file to /app"
+    print_comment "$YELLOW" "copy jar file to /app"
     cp target/$component_name.jar /app/$component_name.jar
     step_status "copy jar file to /app"
 
