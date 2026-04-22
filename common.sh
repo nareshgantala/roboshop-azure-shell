@@ -76,14 +76,14 @@ function user_build(){
     add_appuser
     print_comment "$YELLOW" "download $component_name code"
     rm -rf /tmp/$component_name.zip
-    curl -L -o /tmp/$component_name.zip https://raw.githubusercontent.com/raghudevopsb89/roboshop-microservices/main/artifacts/$component_name.zip
+    curl -L -o /tmp/$component_name.zip https://raw.githubusercontent.com/raghudevopsb89/roboshop-microservices/main/artifacts/$component_name.zip &> /dev/null
     step_status "download $component_name code"
     cd /app
     print_comment "$YELLOW" "unzip code"
-    unzip /tmp/$component_name.zip
+    unzip /tmp/$component_name.zip &> /dev/null
     step_status "unzip code"
     print_comment "$YELLOW" "install node dependencies"
-    npm install --production
+    npm install --production &> /dev/null
     step_status "install node dependencies"
 }
 
