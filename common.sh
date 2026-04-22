@@ -66,9 +66,9 @@ function system_restart(){
     step_status "restart $component_name service"
 }
 
-function nodejs(){
+function user_build(){
     print_comment "$YELLOW" "Install nodejs"
-    curl -fsSL https://rpm.nodesource.com/setup_20.x | bash -
+    curl -fsSL https://rpm.nodesource.com/setup_20.x | bash - &> /dev/null
     dnf install -y nodejs &> /dev/null
     step_status "nodejs installation"
     add_appuser
