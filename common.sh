@@ -203,3 +203,27 @@ function payment_build(){
     pip3 install -r requirements.txt &> /dev/null
     step_status "install dependencies"
 }
+
+function orders_build(){
+    print_comment "$YELLOW" "java, maven installation"
+    dnf install -y java-21-openjdk java-21-openjdk-devel maven
+    step_status "java, maven installation"
+    rm -rf /app
+    rm -rf /tmp/$component_name.zip
+    print_comment "$YELLOW" "$component_name code download"
+    curl -L -o /tmp/$component_name.zip https://raw.githubusercontent.com/raghudevopsb89/roboshop-microservices/main/artifacts/$component_name.zip
+    step_status "$component_name code download"
+    mkdir -p /app && cd /app
+    add_appuser
+    print_comment "$component_name code download"
+    unzip /tmp/$component_name.zip
+    step_status "unzip $component_name code"
+    print_comment "build with maven"
+    mvn clean package -DskipTests
+    step_status "build with maven"
+
+    print_comment "copy jar file to /app"
+    cp target/$component_name.jar /app/$component_name.jar
+    step_status "copy jar file to /app"
+
+}
