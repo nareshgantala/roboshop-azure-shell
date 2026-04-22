@@ -135,13 +135,11 @@ function nginx(){
     fi
 }
 
-function npm(){
+function frontend_build(){
     print_comment $YELLOW "Install nodejs"
     curl -fsSL https://rpm.nodesource.com/setup_20.x | bash - &> /dev/null
     dnf install -y nodejs &> /dev/null
     step_status "node installation"
-
-
     print_comment $YELLOW "Download $component_name source code"
     curl -L -o /tmp/$component_name.zip https://raw.githubusercontent.com/raghudevopsb89/roboshop-microservices/main/artifacts/$component_name.zip &> /dev/null
     step_status "Download front end code from remote repo" 
@@ -149,9 +147,6 @@ function npm(){
     mkdir -p /tmp/$component_name &> /dev/null
     cd /tmp/$component_name
     unzip /tmp/$component_name.zip &> /dev/null
-
-
-
     step_status "unzipping front end code in /tmp" 
     npm cache clean --force
     npm install &> /dev/null
@@ -162,7 +157,6 @@ function npm(){
     step_status "remove default code" 
     cp -r out/* /usr/share/nginx/html/ &> /dev/null
     step_status "download front end source code"
-    
     systemctl restart nginx 
     step_status "nginx restart"
 }

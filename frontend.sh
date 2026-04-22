@@ -3,4 +3,4 @@
 source "$(dirname "$0")/common.sh"
 component_name=frontend
 nginx
-npm
+frontend_build
