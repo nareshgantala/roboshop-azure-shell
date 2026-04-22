@@ -227,3 +227,31 @@ function orders_build(){
     step_status "copy jar file to /app"
 
 }
+
+function ratings_build(){
+    print_comment "$YELLOW" "install python,mysql client"
+    dnf install -y python3 python3-pip mysql8.4
+    step_status "install python,mysql client"
+    print_comment "$YELLOW" "download $component_name code"
+    rm -rf /tmp/$component_name.zip
+    curl -L -o /tmp/$component_name.zip https://raw.githubusercontent.com/raghudevopsb89/roboshop-microservices/main/artifacts/$component_name.zip
+    step_status "download $component_name code"
+    rm -rf /app
+    mkdir -p /app && cd /app
+
+    print_comment "$YELLOW" "unzip code"
+    unzip /tmp/$component_name.zip
+    step_status "unzip code"
+
+    print_comment "$YELLOW" "database config"
+    mysql -h mysql.naresh-training.online -u root -pRoboShop@1 < db/schema.sql
+    mysql -h mysql.naresh-training.online -u root -pRoboShop@1 < db/app-user.sql
+    step_status "database config"
+
+    add_appuser
+
+    print_comment "$YELLOW" "install dependencies"
+    pip3 install -r /app/requirements.txt cryptography
+    step_status "install dependencies"
+
+}
