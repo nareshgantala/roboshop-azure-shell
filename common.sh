@@ -148,7 +148,7 @@ function frontend_build(){
     cd /tmp/$component_name
     unzip /tmp/$component_name.zip &> /dev/null
     step_status "unzipping front end code in /tmp" 
-    npm cache clean --force
+    npm cache clean --force &> /dev/null
     npm install &> /dev/null
     step_status "Installing dependencies and libraries"
     npm run build &> /dev/null

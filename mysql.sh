@@ -15,7 +15,7 @@ step_status "restart $component_name"
 
 
 print_comment $YELLOW "Create Password for user"
-mysql -u root -pRoboShop@1 -e "SHOW DATABASES;"
+mysql -u root -pRoboShop@1 -e "SHOW DATABASES;" &> /dev/null
 if [ $? -ne 0 ]
 then
   mysql -u root -e "
