@@ -93,20 +93,20 @@ function catalogue_build(){
     step_status "golang & msql client installation"
     print_comment $YELLOW "download $component_name code"
     rm -rf /tmp/$component_name.zip
-    curl -L -o /tmp/$component_name.zip https://raw.githubusercontent.com/raghudevopsb89/roboshop-microservices/main/artifacts/$component_name.zip
+    curl -L -o /tmp/$component_name.zip https://raw.githubusercontent.com/raghudevopsb89/roboshop-microservices/main/artifacts/$component_name.zip &> /dev/null
     step_status "download $component_name code"
     print_comment $YELLOW "unzip code"
     rm -rf /app
     mkdir -p /app
     cd /app
-    unzip /tmp/$component_name.zip
+    unzip /tmp/$component_name.zip &> /dev/null
     step_status "unzip code"
     print_comment $YELLOW "create appuser"
     add_appuser
     cd /app
     print_comment $YELLOW "Build go app"
-    go mod tidy
-    CGO_ENABLED=0 go build -o /app/$component_name .
+    go mod tidy &> /dev/null
+    CGO_ENABLED=0 go build -o /app/$component_name . &> /dev/null
     step_status "Build Go app"
 
 }
