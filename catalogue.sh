@@ -2,11 +2,10 @@
 source "$(dirname "$0")/common.sh"
 component_name=catalogue
 copy_service_file $component_name
-
+go
 print_comment $YELLOW "copy database schema to mysql server"
 mysql -h mysql.naresh-training.online -u root -pRoboShop@1 < db/schema.sql
 mysql -h naresh-training.online -u root -pRoboShop@1 < db/app-user.sql
 mysql -h naresh-training.online -u root -pRoboShop@1 $component_name < db/master-data.sql
 step_status "copy database schema to mysql server"
-go
 system_restart
