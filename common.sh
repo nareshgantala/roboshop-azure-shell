@@ -183,3 +183,23 @@ function shipping_build(){
     cp target/$component_name.jar /app/$component_name.jar
     step_status "copy jar in /app"
 }
+
+function payment_build(){
+    print_comment "$YELLOW" "install python"
+    dnf install -y python3 python3-pip &> /dev/null
+    step_status "python installation"
+    rm -rf /app
+    mkdir -p /app
+    add_appuser
+    rm -rf /tmp/$component_name.zip
+    print_comment "$YELLOW" "download $component_name code"
+    curl -L -o /tmp/$component_name.zip https://raw.githubusercontent.com/raghudevopsb89/roboshop-microservices/main/artifacts/$component_name.zip &> /dev/null
+    step_status "download $component_name code"
+    cd /app
+    print_comment "$YELLOW" "unzip code"
+    unzip /tmp/$component_name.zip &> /dev/null
+    step_status "unzip code"
+    print_comment "$YELLOW" "install dependencies"
+    pip3 install -r requirements.txt &> /dev/null
+    step_status "install dependencies"
+}
