@@ -87,7 +87,7 @@ function nodejs(){
     step_status "install node dependencies"
 }
 
-function go(){
+function catalogue_build(){
     print_comment $YELLOW "install golang & msql client"
     dnf install -y golang git mysql8.4 &> /dev/null
     step_status "golang & msql client installation"
