@@ -71,9 +71,9 @@ function user_build(){
     curl -fsSL https://rpm.nodesource.com/setup_20.x | bash - &> /dev/null
     dnf install -y nodejs &> /dev/null
     step_status "nodejs installation"
-    add_appuser
     rm -rf /app
     mkdir -p /app
+    add_appuser
     print_comment "$YELLOW" "download $component_name code"
     rm -rf /tmp/$component_name.zip
     curl -L -o /tmp/$component_name.zip https://raw.githubusercontent.com/raghudevopsb89/roboshop-microservices/main/artifacts/$component_name.zip
